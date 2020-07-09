@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="handler">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/node_modules/@aws-cdk/aws-lambda/test/handler.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
