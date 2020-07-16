@@ -20,14 +20,29 @@ type VerifyError = {
   error_description: string;
 }
 
-const verifyIdToken = async ({idToken}: { idToken: string }): Promise<VerifyResponse> => {
-  const res = await axios.post<VerifyResponse>('https://api.line.me/oauth2/v2.1/verify', {
-    id_token: idToken,
-    client_id: process.env.CLIENT_ID
-  }).catch((e: AxiosError<VerifyError>) => {
-    console.log('Error: ' + JSON.stringify(e.response?.data, null, 2));
-    throw new Error(e.response?.data.error);
-  });
+/**
+ * LINE Social APIを使ってIDTokenの検証を行う
+ * https://developers.line.biz/ja/reference/social-api/#verify-id-token
+ * 仕様書には記載されていないが Content-Type: 'application/x-www-form-urlencoded' でないとリクエストを受け付けません。
+ * @param {Object} token - トークンオブジェクト
+ * @param {string} token.idToken - IDToken
+ * @returns デコードされたIDToken
+ */
+const verifyIdToken = async ({ idToken }: { idToken: string }): Promise<VerifyResponse> => {
+  const res = await axios
+    .post<VerifyResponse>(
+      'https://api.line.me/oauth2/v2.1/verify',
+      `id_token=${idToken}&client_id=${process.env.CLIENT_ID}`,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    )
+    .catch((e: AxiosError<VerifyError>) => {
+      console.log('Error: ' + JSON.stringify(e.response?.data, null, 2));
+      throw new Error(e.response?.data.error);
+    });
 
   return res.data;
 };
