@@ -53,10 +53,13 @@ const generatePolicy = (
 
 };
 
-const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> => {
+export const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> => {
   console.log('Event: ' + JSON.stringify(event, null, 2));
 
-  const payload = await verifyIdToken({idToken: event.authorizationToken}).catch(() => {
+  // API Gatewayによるバリデーションで Barere XXXXXX 形式である事は担保されているので例外処理は不要です。
+  const idToken = event.authorizationToken.split(' ')[1];
+
+  const payload = await verifyIdToken({ idToken }).catch(() => {
     return null;
   });
 
