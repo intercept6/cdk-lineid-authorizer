@@ -1,12 +1,6 @@
-# Welcome to your CDK TypeScript Construct Library project!
+# AWS CDK ライブラリ LINE ID Authorizer
 
-You should explore the contents of this project. It demonstrates a CDK Construct Library that includes a construct (`CdkLineidAuthorizer`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+## 概要
 
-The construct defines an interface (`CdkLineidAuthorizerProps`) to configure the visibility timeout of the queue.
-
-## Useful commands
-
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
+現在開発中です。
+LINE IDのID Token用のAPI Gateway Lambda オーソライザーを提供するAWS CDKライブラリです。
