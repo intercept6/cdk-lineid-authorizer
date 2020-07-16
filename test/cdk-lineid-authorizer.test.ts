@@ -1,21 +1,37 @@
 import { expect as expectCDK, haveResource, SynthUtils } from '@aws-cdk/assert';
-import * as cdk from '@aws-cdk/core';
+import { App, Stack } from '@aws-cdk/core';
+import { AuthorizationType, MockIntegration, RestApi } from '@aws-cdk/aws-apigateway';
 import * as CdkLineidAuthorizer from '../lib/index';
 
-test('SQS Queue Created', () => {
-    const app = new cdk.App();
-    const stack = new cdk.Stack(app, "TestStack");
+test('APIGateway Authorizer Created', () => {
+    const app = new App();
+    const stack = new Stack(app, "TestStack");
     // WHEN
-    new CdkLineidAuthorizer.CdkLineidAuthorizer(stack, 'MyTestConstruct');
+    const { authorizer }  = new CdkLineidAuthorizer.CdkLineidAuthorizer(stack, 'MyTestConstruct');
+    const api =  new RestApi(stack, 'Api');
+    api.root.addMethod('GET', new MockIntegration(), {
+      authorizationType: AuthorizationType.CUSTOM,
+      authorizer
+    });
+
     // THEN
-    expectCDK(stack).to(haveResource("AWS::SQS::Queue"));
+    expectCDK(stack).to(haveResource("AWS::ApiGateway::Authorizer", {
+      Type: 'TOKEN',
+      IdentitySource: "method.request.header.Authorization",
+    }));
 });
 
-test('SNS Topic Created', () => {
-  const app = new cdk.App();
-  const stack = new cdk.Stack(app, "TestStack");
+test('Snapshot test', () => {
+  const app = new App();
+  const stack = new Stack(app, "TestStack");
   // WHEN
-  new CdkLineidAuthorizer.CdkLineidAuthorizer(stack, 'MyTestConstruct');
+  const { authorizer }  = new CdkLineidAuthorizer.CdkLineidAuthorizer(stack, 'MyTestConstruct');
+  const api =  new RestApi(stack, 'Api');
+  api.root.addMethod('GET', new MockIntegration(), {
+    authorizationType: AuthorizationType.CUSTOM,
+    authorizer
+  });
+
   // THEN
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic"));
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });

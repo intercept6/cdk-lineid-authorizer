@@ -71,7 +71,7 @@ const generatePolicy = (
 export const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> => {
   console.log('Event: ' + JSON.stringify(event, null, 2));
 
-  // API Gatewayによるバリデーションで Barere XXXXXX 形式である事は担保されているので例外処理は不要です。
+  // API Gatewayによるバリデーションで Bearer XXXXXX 形式である事は担保されているので例外処理は不要です。
   const idToken = event.authorizationToken.split(' ')[1];
 
   const payload = await verifyIdToken({ idToken }).catch(() => {
@@ -91,10 +91,8 @@ export const handler = async (event: APIGatewayTokenAuthorizerEvent): Promise<AP
   return {
     principalId,
     context: {
-      sub: payload.sub,
-      name: payload.name,
-      picture: payload.picture,
-      email: payload.email
+      ...payload,
+      amr: payload.amr.join()
     },
     policyDocument: generatePolicy({effect: 'Allow', resource}),
   }

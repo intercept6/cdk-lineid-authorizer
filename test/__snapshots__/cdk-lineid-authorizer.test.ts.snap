@@ -1,0 +1,306 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot test 1`] = `
+Object {
+  "Outputs": Object {
+    "ApiEndpoint4F160690": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "ApiF70053CD",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "ApiDeploymentStageprod3EB9684E",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParameters99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15bArtifactHashBFF037E4": Object {
+      "Description": "Artifact hash for asset \\"99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15b\\"",
+      "Type": "String",
+    },
+    "AssetParameters99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15bS3BucketFB2AFFF8": Object {
+      "Description": "S3 bucket for asset \\"99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15b\\"",
+      "Type": "String",
+    },
+    "AssetParameters99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15bS3VersionKey8C631ABD": Object {
+      "Description": "S3 key for asset version \\"99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15b\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "ApiAccountA18C9B29": Object {
+      "DependsOn": Array [
+        "ApiF70053CD",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "ApiCloudWatchRole73EC6FC4",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "ApiCloudWatchRole73EC6FC4": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiDeploymentB17BE62De052b3f6d6a5dce203735b13c3ed8acc": Object {
+      "DependsOn": Array [
+        "ApiGET9257B917",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "ApiF70053CD",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "ApiDeploymentStageprod3EB9684E": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "ApiDeploymentB17BE62De052b3f6d6a5dce203735b13c3ed8acc",
+        },
+        "RestApiId": Object {
+          "Ref": "ApiF70053CD",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "ApiF70053CD": Object {
+      "Properties": Object {
+        "Name": "Api",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "ApiGET9257B917": Object {
+      "Properties": Object {
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": Object {
+          "Ref": "MyTestConstructAuthorizer4C503478",
+        },
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "Type": "MOCK",
+        },
+        "ResourceId": Object {
+          "Fn::GetAtt": Array [
+            "ApiF70053CD",
+            "RootResourceId",
+          ],
+        },
+        "RestApiId": Object {
+          "Ref": "ApiF70053CD",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "MyTestConstructAuthorizer4C503478": Object {
+      "Properties": Object {
+        "AuthorizerUri": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":lambda:path/2015-03-31/functions/",
+              Object {
+                "Fn::GetAtt": Array [
+                  "MyTestConstructAuthorizerLambda1F522EBF",
+                  "Arn",
+                ],
+              },
+              "/invocations",
+            ],
+          ],
+        },
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "TestStackMyTestConstructAuthorizerF59481D9",
+        "RestApiId": Object {
+          "Ref": "ApiF70053CD",
+        },
+        "Type": "TOKEN",
+      },
+      "Type": "AWS::ApiGateway::Authorizer",
+    },
+    "MyTestConstructAuthorizerLambda1F522EBF": Object {
+      "DependsOn": Array [
+        "MyTestConstructAuthorizerLambdaServiceRole57B69B79",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15bS3BucketFB2AFFF8",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15bS3VersionKey8C631ABD",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters99a502ffc36b9bf7dbe5ff9006a99ce10d57e71314808dae86f46dfaec00f15bS3VersionKey8C631ABD",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "MyTestConstructAuthorizerLambdaServiceRole57B69B79",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "MyTestConstructAuthorizerLambdaServiceRole57B69B79": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MyTestConstructAuthorizerLambdaTestStackMyTestConstructAuthorizerF59481D9PermissionsA0245ED1": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "MyTestConstructAuthorizerLambda1F522EBF",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "ApiF70053CD",
+              },
+              "/authorizers/",
+              Object {
+                "Ref": "MyTestConstructAuthorizer4C503478",
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+  },
+}
+`;
